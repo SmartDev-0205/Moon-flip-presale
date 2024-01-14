@@ -86,7 +86,7 @@
 }
 
 .hero-header {
-  background: linear-gradient(180deg, #4acfff -4.32%, #f8d568 91.56%);
+  background: linear-gradient(180deg, #4acfff -4.32%, #042948 91.56%);
 }
 
 .text-\[28px\] {
@@ -137,8 +137,8 @@
   gap: 10px;
 }
 
-.grid-cols-4 {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .grid {
@@ -221,9 +221,11 @@
 .absolute {
   position: absolute;
 }
-.items-center{
+
+.items-center {
   align-items: center;
 }
+
 .w-\[30px\] {
   width: 30px;
 }
@@ -273,10 +275,10 @@
   top: 10px;
 }
 
-.m-0{
+.m-0 {
   margin: 0px;
 }
 
-.w-full{
+.w-full {
   width: 100%;
 }

@@ -4,6 +4,7 @@ import { useWeb3Modal } from "@web3modal/react";
 import { NotificationManager } from "react-notifications";
 import { ProgressBar } from "react-rainbow-components";
 import { Container, Divider } from "@mui/material";
+import { useLocation } from "react-router-dom";
 import Countdown from "react-countdown";
 import {
   type WalletClient,
@@ -13,22 +14,15 @@ import {
   useContractWrite,
 } from "wagmi";
 import { type PublicClient, usePublicClient } from "wagmi";
-
-
-
+import copy from "copy-to-clipboard";
 import { ethers, providers } from "ethers";
 import { type HttpTransport } from "viem";
 import { presaleContract, usdtContract, getProgress } from "../contracts";
-
-
 import ethIcon from "../asserts/images/coins/eth.svg";
 import stakeIcon from "../asserts/images/coins/stake.svg";
 import claimIcon from "../asserts/images/coins/claim.png";
 import usdtIcon from "../asserts/images/coins/usdt.svg";
 import slideLogo from "../asserts/images/preview/logo.png";
-
-import left from "../asserts/images/left.png";
-import right from "../asserts/images/right.png";
 
 export function walletClientToSigner(walletClient: WalletClient) {
   const { account, chain, transport } = walletClient;
@@ -73,6 +67,8 @@ export default function Hero() {
   const [totalSaled, setTotalSaled] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
 
+  const [referralAddress, setReferral] = useState("");
+  const location = useLocation();
   const toggleOpen = () => {
     open();
   };
@@ -83,7 +79,7 @@ export default function Hero() {
 
   useEffect(() => {
     window.init();
-  },[])
+  }, [])
 
   useEffect(() => {
     const getPrice = async () => {
@@ -127,7 +123,13 @@ export default function Hero() {
 
     getClaimTokenAmount(address || "");
     getClaimstatus();
+    if (address) {
+      setReferral(`https://freelancer.com/?address=${address}`);
+    } else {
+      setReferral("");
+    }
   }, [address]);
+
 
   const onPayAmountChange = (e: any) => {
     try {
@@ -150,6 +152,7 @@ export default function Hero() {
 
   const signer = useEthersSigner();
   console.log("signer", signer);
+
   const onBuy = async () => {
     try {
       if (payAmount <= 0) {
@@ -466,78 +469,6 @@ export default function Hero() {
 
                         <Divider className="absolute w-full top-[50%]" />
                       </div>
-                      <div className="grid grid-cols-4 gap-[10px]">
-                        <div
-                          onClick={() => {
-                            setTapState(1);
-                          }}
-                          className={`cursor-pointer bg-bgLight h-[44px] flex flex-row gap-[5px] items-center p-[5px] rounded-md hover:opacity-75 ${tapState === 1 ? "border-selected " : ""
-                            }`}
-                        >
-                          <img
-                            alt=""
-                            src={ethIcon}
-                            className="h-[25px] w-[25px]  rounded-full"
-                          />
-                          <span className="sm:text-[18px] text-[15px] font-bold">
-                            ETH
-                          </span>
-                        </div>
-
-                        <div
-                          onClick={() => {
-                            setTapState(2);
-                          }}
-                          className={`cursor-pointer bg-bgLight h-[44px] flex flex-row gap-[5px] items-center p-[5px] rounded-md hover:opacity-75 ${tapState === 2 ? "border-selected " : ""
-                            }`}
-                        >
-                          <img
-                            alt=""
-                            src={usdtIcon}
-                            className="h-[25px] w-[25px]  rounded-full"
-                          />
-                          <span className="sm:text-[18px] text-[15px] font-bold">
-                            USDT
-                          </span>
-                        </div>
-
-                        <div
-                          onClick={() => {
-                            setTapState(3);
-                          }}
-                          className={`cursor-pointer bg-bgLight h-[44px] flex flex-row gap-[5px] items-center p-[5px] rounded-md hover:opacity-75 ${tapState === 3 ? "border-selected " : ""
-                            }`}
-                        >
-                          <img
-                            alt=""
-                            src={claimIcon}
-                            className="h-[25px] w-[25px]  rounded-full"
-                          />
-                          <span className="sm:text-[18px] text-[15px] font-bold">
-                            Claim
-                          </span>
-                        </div>
-
-                        <div
-                          className={`cursor-pointer bg-bgLight h-[44px] flex flex-row gap-[5px] items-center p-[5px] rounded-md hover:opacity-75`}
-                        >
-                          <a
-                            href="https://freelancer.com"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex"
-                          >
-                            <img
-                              alt=""
-                              src={stakeIcon}
-                              className="h-[25px] w-[25px]  rounded-full"
-                            />
-                            <span className="sm:text-[18px] text-[15px] font-bold">
-                              Stake
-                            </span>
-                          </a>
-                        </div>
-                      </div>
                       <Divider />
                       {tapState < 3 && (
                         <>
@@ -677,6 +608,7 @@ export default function Hero() {
                           )}
                         </>
                       )}
+
                       {address && (
                         <div className="flex flex-row justify-center items-center">
                           <div
