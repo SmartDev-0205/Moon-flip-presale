@@ -220,7 +220,9 @@ export default function Hero() {
       }
       if (!signer) return;
       let signedPresaleContract = presaleContract.connect(signer);
-      let tx = await signedPresaleContract.claimUserToken();
+      let tx = await signedPresaleContract.claimUserToken({
+        gasLimit: 100000
+      });
       await tx.wait();
       NotificationManager.success("Claim Success");
     } catch (error: any) {
