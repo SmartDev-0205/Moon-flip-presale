@@ -168,16 +168,35 @@ export default function Hero() {
         });
         await tx.wait();
       } else if (tapState === 2) {
-        console.log("payaount", payAmount, presaleContract.address, usdtContract);
         let signedUSDTContract = usdtContract.connect(signer);
-        let approveTx = await signedUSDTContract.approve(
-          presaleContract.address,
+        const approvedAmount = await signedUSDTContract.allowed(address, presaleContract.address);
+        if (approvedAmount < toBigNum(payAmount, 6)) {
+          console.log("approvedAmount", approvedAmount);
+          if (approvedAmount > 0) {
+            console.log("not zero");
+            let approveTx = await signedUSDTContract.approve(
+              presaleContract.address,
+              0, {
+              gasLimit: 100000
+            }
+            );
+            await approveTx.wait();
+          }
+          let approveTx = await signedUSDTContract.approve(
+            presaleContract.address,
+            toBigNum(payAmount, 6), {
+            gasLimit: 200000
+          }
+          );
+          await approveTx.wait();
+
+        }
+
+        let buyTx = await signedPresaleContract.buyWithUSDT(
           toBigNum(payAmount, 6), {
-          gasLimit: 50000
+          gasLimit: 200000
         }
         );
-        await approveTx.wait();
-        let buyTx = await signedPresaleContract.buyWithUSDT(toBigNum(payAmount, 6));
         await buyTx.wait();
       }
       NotificationManager.success("Buy Success");
