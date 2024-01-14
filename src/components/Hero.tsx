@@ -94,6 +94,7 @@ export default function Hero() {
       console.log("token usdt price", tokenUsdtPrice);
     };
     getPrice();
+
   }, []);
 
   useEffect(() => {
@@ -159,9 +160,6 @@ export default function Hero() {
         NotificationManager.error("Please input ETH amount");
         return;
       }
-
-      // const prov = new ethers.providers.Web3Provider(provider);
-      // let signer = await prov.getSigner();
       if (!signer) return;
       let signedPresaleContract = presaleContract.connect(signer);
       if (tapState === 1) {
@@ -468,6 +466,58 @@ export default function Hero() {
                         </div>
 
                         <Divider className="absolute w-full top-[50%]" />
+                      </div>
+                      <div className="grid grid-cols-3 gap-[10px]">
+                        <div
+                          onClick={() => {
+                            setTapState(1);
+                          }}
+                          className={`cursor-pointer bg-bgLight h-[44px] flex flex-row gap-[5px] items-center p-[5px] rounded-md hover:opacity-75 ${tapState === 1 ? "border-selected " : ""
+                            }`}
+                        >
+                          <img
+                            alt=""
+                            src={ethIcon}
+                            className="h-[25px] w-[25px]  rounded-full"
+                          />
+                          <span className="sm:text-[18px] text-[15px] font-bold">
+                            ETH
+                          </span>
+                        </div>
+
+                        <div
+                          onClick={() => {
+                            setTapState(2);
+                          }}
+                          className={`cursor-pointer bg-bgLight h-[44px] flex flex-row gap-[5px] items-center p-[5px] rounded-md hover:opacity-75 ${tapState === 2 ? "border-selected " : ""
+                            }`}
+                        >
+                          <img
+                            alt=""
+                            src={usdtIcon}
+                            className="h-[25px] w-[25px]  rounded-full"
+                          />
+                          <span className="sm:text-[18px] text-[15px] font-bold">
+                            USDT
+                          </span>
+                        </div>
+
+                        <div
+                          onClick={() => {
+                            setTapState(3);
+                          }}
+                          className={`cursor-pointer bg-bgLight h-[44px] flex flex-row gap-[5px] items-center p-[5px] rounded-md hover:opacity-75 ${tapState === 3 ? "border-selected " : ""
+                            }`}
+                        >
+                          <img
+                            alt=""
+                            src={claimIcon}
+                            className="h-[25px] w-[25px]  rounded-full"
+                          />
+                          <span className="sm:text-[18px] text-[15px] font-bold">
+                            Claim
+                          </span>
+                        </div>
                       </div>
                       <Divider />
                       {tapState < 3 && (
